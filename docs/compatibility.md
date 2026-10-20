@@ -16,7 +16,7 @@ The current app catalog contains 20 block IDs (Oak log and Birch log each have a
 ## Mapping and behavior gaps
 
 - Java paths are a manually curated mapping in `src/domain.ts`; a complete pinned Java client asset-index audit for every path is pending. Java sound events are assembled into an overriding `sounds.json`, but replacement completeness and sound-pool behavior have not been checked against the exact 26.3 client.
-- Bedrock texture paths are hand-curated and have not yet been compared entry-by-entry with `blocks.json` and `terrain_texture.json` at commit `46ba6ea`. Catalog sound rows are shown for discovery and upload, but Bedrock sound export is blocked until exact release events and replacement paths are cataloged.
+- Bedrock texture paths are hand-curated and have not yet been compared entry-by-entry with `blocks.json` and `terrain_texture.json` at commit `46ba6ea`. Bedrock sound editing is hidden and sound export is blocked until exact release events and replacement paths are cataloged. Legacy sound edits are retained for explicit removal.
 - Shared texture/sound reverse references are not exhaustive. Affected consumers are not currently shown, and a shared asset may affect more selections than the UI lists.
 - Catalog items include cube faces and simple texture slots only. Models, animated textures, special renderers, and non-cube slot sets are excluded.
 - A Bedrock manifest uses distinct project UUIDs, resources module type, and a conservative minimum engine version `[1, 20, 0]`. The game display version and engine version remain separate values.

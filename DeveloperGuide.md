@@ -19,7 +19,7 @@ The first iteration is a working vertical slice of the larger product. Prioritiz
 - A curated catalog targeting at least 20 ordinary blocks and 12 sound events per edition, where verified mappings permit. Include simple blocks, a log with separate top/side textures, and at least one block with multiple distinct faces. Include block interaction, entity, and ambient sounds. Record exact coverage.
 - Search by friendly name and identifier, Blocks/Sounds tabs, category filtering, and a changed-assets filter.
 - Texture slots with PNG upload, transparent/pixelated preview, dimension validation, replacement, and removal. Support multiple edits in one pack.
-- Ogg Vorbis upload with codec validation, playback, duration/channel information, and meaningful errors. For the first iteration, reject MP3/WAV and Ogg Opus with conversion guidance rather than implementing a large transcoding subsystem.
+- Java sound uploads accept MP3 and Ogg Vorbis with codec validation, playback, duration/channel information, and meaningful errors. Per the 2026-10-20 user request, MP3 conversion is now in scope and Bedrock sound editing is hidden. MP3 clips up to 16 MiB and two minutes are decoded in-browser, downmixed to mono, and encoded to Vorbis in a lazily loaded worker. WAV and Ogg Opus remain unsupported.
 - Pack name, description, and optional PNG icon; a replacement summary and actionable validation messages.
 - Java ZIP export and Bedrock MCPACK plus ZIP export. Show appropriate installation instructions.
 - Local draft autosave in IndexedDB, restoration after reload, and an editable project backup download/import containing metadata and uploaded assets. The project backup is distinct from the Minecraft pack.
@@ -28,7 +28,7 @@ The first iteration is a working vertical slice of the larger product. Prioritiz
 
 ### Deferred to subsequent iterations
 
-MP3/WAV conversion via ffmpeg.wasm, trimming and normalization, animated textures, arbitrary models and special block renderers, full vanilla catalogs, automated catalog regeneration, painting tools, shaders/PBR, item/entity texture editors, accounts, sharing, cloud persistence, and historical/snapshot/preview versions.
+WAV conversion, trimming and normalization, animated textures, arbitrary models and special block renderers, full vanilla catalogs, automated catalog regeneration, painting tools, shaders/PBR, item/entity texture editors, accounts, sharing, cloud persistence, and historical/snapshot/preview versions.
 
 Do not show unsupported features as functioning controls. This first-iteration boundary is an implementation default for a small deliverable, not a change to the broader product direction.
 
@@ -207,9 +207,20 @@ Use original test assets and generic catalog icons initially. Do not redistribut
 ### Verification and gaps
 
 - `npm run typecheck`, `npm run lint`, `npm run test`, `npm run test:e2e`, and `npm run build` are the implemented commands. Final follow-up review results: typecheck passed, lint passed, unit tests passed (9), browser tests passed (7), and production build passed. Browser tests open both downloaded archive formats and check root metadata, paths, texture and sound bytes.
-- Browser tests generate a 16×16 PNG in-browser. A 0.34-second mono 44.1 kHz sine-wave Ogg Vorbis fixture in `tests/fixtures/generated-tone.ogg` was generated with the test-only `@audio/encode-ogg` package (MIT, not bundled in the app). The Java browser test validates/decode-previews this file, backs it up and restores it, downloads the pack, and checks the Ogg bytes plus `sounds.json` reference.
+- Browser tests generate a 16×16 PNG in-browser. A 0.34-second mono 44.1 kHz sine-wave Ogg Vorbis fixture in `tests/fixtures/generated-tone.ogg` was generated with `@audio/encode-ogg` (MIT). This package is now a production dependency used only in the conversion worker. The Java browser test validates/decode-previews this file, backs it up and restores it, downloads the pack, and checks the Ogg bytes plus `sounds.json` reference.
 - Follow-up regression coverage checks recent edits survive saved-draft switching during the autosave delay; malformed, unreferenced, metadata-invalid, and byte-invalid backup contents are rejected without replacing the current draft; Bedrock manifest version increments after metadata edits; replacement upload inputs are keyboard-focusable; and both editions' log-top paths have a single correct directory prefix.
 - Java and Bedrock catalog paths still require entry-by-entry comparison with pinned release resources. Bedrock sound replacement remains blocked; shared-reference warnings and broad multi-slot edit coverage remain incomplete.
 - No Minecraft smoke test was run. Both targets are `archive-tested` only where automated tests inspected the produced ZIP structure; neither is `game-tested`. Do not present a game-compatibility badge.
 
 See `docs/compatibility.md` for source references and `docs/manual-testing.md` for the pending in-game checklist.
+
+## MP3 and Bedrock UI update (2026-10-20)
+
+- `src/sound-upload.ts` checks actual MPEG Layer III content, bounds input size/duration, decodes with Web Audio, and coordinates cancellation and timeouts.
+- `src/vorbis.worker.ts` mixes stereo PCM to mono and encodes Vorbis at quality 5 using the locally bundled encoder. The worker is terminated after success, failure, or cancellation. No FFmpeg installation or special hosting headers are required.
+- Converted edit bytes and MIME type are Ogg Vorbis; the original filename is retained only as a display label. Backup import still strictly validates Vorbis content, so no reconversion is needed.
+- The app checks total project size using converted bytes and locks editing while processing. Cancelling preserves the current project.
+- Bedrock only exposes Blocks. Older sound edits remain removable in the changes list and continue to block export until removed.
+- The stereo MP3 fixture is an original one-second 440/660 Hz tone generated by `tests/fixtures/generate-mp3.mjs`. The MP3 encoder is test-only.
+- Additional browser checks cover actual MP3 conversion and decoded output, backup/restoration, malformed input, cancellation, and hidden Bedrock sound controls.
+- Verification: typecheck, lint, 12 unit tests, 11 browser tests, and production build passed. The built site was also served with Vite preview: MP3 conversion and Java ZIP download succeeded with no browser errors. Minecraft in-game verification remains pending.
