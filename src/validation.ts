@@ -1,5 +1,20 @@
 import type{Asset,Edit}from'./domain';
 export const LIMITS={fileBytes:16*1024*1024,totalBytes:100*1024*1024};
+export async function cropImageToPng(file:File,offset:number):Promise<File>{
+ if(!Number.isFinite(offset)||offset<0||offset>1)throw Error('Choose a valid crop position.');
+ const bitmap=await createImageBitmap(file);
+ try{
+  const side=Math.min(bitmap.width,bitmap.height);if(side<16||side>4096)throw Error('The square crop must be between 16 and 4096 pixels.');const travel=bitmap.width>bitmap.height?bitmap.width-side:bitmap.height-side,origin=travel*offset;
+  const sx=bitmap.width>bitmap.height?origin:0,sy=bitmap.height>bitmap.width?origin:0;
+  const canvas=document.createElement('canvas');canvas.width=side;canvas.height=side;
+  const context=canvas.getContext('2d');if(!context)throw Error('This browser cannot prepare the cropped texture.');
+  context.imageSmoothingEnabled=false;
+  context.drawImage(bitmap,sx,sy,side,side,0,0,side,side);
+  const blob=await new Promise<Blob>((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(Error('Could not encode the cropped PNG.')),'image/png'));
+  if(blob.size>LIMITS.fileBytes)throw Error('Cropped PNG exceeds the 16 MiB file limit.');
+  return new File([blob],file.name.replace(/\.[^.]+$/,'')+'-square.png',{type:'image/png',lastModified:file.lastModified});
+ }finally{bitmap.close();}
+}
 async function pngInfo(data:ArrayBuffer){const bytes=new Uint8Array(data);const signature=[137,80,78,71,13,10,26,10];if(signature.some((n,i)=>bytes[i]!==n)||bytes.length<33)throw Error('This file is not a complete PNG image.');const view=new DataView(data);const width=view.getUint32(16),height=view.getUint32(20);if(!width||!height||width>4096||height>4096)throw Error('PNG dimensions must be 1–4096 pixels.');const bitmap=await createImageBitmap(new Blob([data],{type:'image/png'}));bitmap.close();return{width,height};}
 function vorbisInfo(data:ArrayBuffer){const b=new Uint8Array(data);if(b.length<58||String.fromCharCode(...b.subarray(0,4))!=='OggS'||b[4]!==0)throw Error('Not a supported Ogg page. Upload an Ogg Vorbis file.');const segments=b[26];if(!segments||27+segments>b.length)throw Error('Ogg page is truncated.');let packetSize=0;for(let i=0;i<segments;i++){packetSize+=b[27+i];if(b[27+i]<255)break;}const start=27+segments;if(start+packetSize>b.length||packetSize<30)throw Error('Vorbis identification packet is truncated.');const p=b.subarray(start,start+packetSize);if(p[0]!==1||String.fromCharCode(...p.subarray(1,7))!=='vorbis')throw Error('Ogg file is not encoded with Vorbis. Ogg Opus is not accepted.');const view=new DataView(p.buffer,p.byteOffset,p.byteLength);const version=view.getUint32(7,true),channels=p[11],rate=view.getUint32(12,true);if(version!==0||channels<1||channels>8||!rate)throw Error('Invalid Vorbis identification header.');return{channels,rate};}
 async function decodedDuration(data:ArrayBuffer){const audio=new Audio(),url=URL.createObjectURL(new Blob([data],{type:'audio/ogg'}));return new Promise<number>((resolve,reject)=>{const finish=(error?:Error,value=audio.duration)=>{clearTimeout(timer);audio.removeAttribute('src');audio.load();URL.revokeObjectURL(url);if(error)reject(error);else resolve(value);};const timer=setTimeout(()=>finish(Error('Browser could not read the Ogg duration. Check the audio file or try another browser.')),8000);audio.preload='metadata';audio.onloadedmetadata=()=>{const duration=audio.duration;if(Number.isFinite(duration))finish(undefined,duration);else finish(Error('Ogg duration is unavailable.'));};audio.onerror=()=>finish(Error('Browser could not decode this Ogg Vorbis file.'));audio.src=url;audio.load();});}

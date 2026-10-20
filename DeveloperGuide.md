@@ -240,3 +240,7 @@ Java now offers “Villager idle noises” separately from “Villager agrees,�
 - Verification for this UI pass: `npm run typecheck`, `npm run lint`, `npm run test` (17 tests) and `npm run build` passed; `npm run test:e2e` reported all 15 cases passing, but the runner did not exit cleanly after its final case and was stopped. Desktop block-reference and mobile sound-catalog layouts were visually inspected. No Minecraft game test was run.
 
 
+
+## Square texture crop and export sizing (2026-10-21)
+
+Texture replacement accepts PNG, JPEG, and WebP images up to 16 MiB. The user positions a square crop using the full shorter image edge; the cropped square is retained in its original resolution (16–4096 px) in the local project. On archive creation, square textures are downsized with smoothing to the largest supported edge among 64, 32, and 16 pixels that does not exceed the crop. Smaller square assets and older non-square draft textures are left at their existing size. The exported archive is independently checked in browser tests; in-game appearance remains pending.

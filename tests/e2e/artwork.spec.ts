@@ -11,7 +11,7 @@ for (const edition of ['java', 'bedrock'] as const) {
       await page.getByLabel('Search catalog').fill('yellow_poplar_leaves');
       await page.locator('.asset').click();
       await expect(page.locator('.editor-artwork')).toHaveAttribute('aria-label', 'Texture preview unavailable');
-      await expect(page.getByLabel('Choose PNG file')).toBeAttached();
+      await expect(page.getByLabel('Choose texture image')).toBeAttached();
     }
     await page.getByLabel('Search catalog').fill('Oak log');
     const rows = page.locator('.asset');
@@ -19,7 +19,7 @@ for (const edition of ['java', 'bedrock'] as const) {
     expect(await rows.nth(0).locator('img').getAttribute('src')).not.toBe(await rows.nth(1).locator('img').getAttribute('src'));
     await rows.nth(1).click();
     await expect(page.locator('.editor-artwork img')).toHaveAttribute('alt', 'Oak log - top vanilla texture');
-    await expect(page.getByLabel('Choose PNG file')).toBeAttached();
+    await expect(page.getByLabel('Choose texture image')).toBeAttached();
   });
 }
 
@@ -38,5 +38,5 @@ test('a failed thumbnail has an explicit fallback and still allows replacement',
   await page.goto('/');
   await page.locator('.asset').filter({ hasText: /^Stone/ }).first().click();
   await expect(page.locator('.editor-artwork')).toHaveAttribute('aria-label', 'Texture preview unavailable');
-  await expect(page.getByLabel('Choose PNG file')).toBeAttached();
+  await expect(page.getByLabel('Choose texture image')).toBeAttached();
 });
