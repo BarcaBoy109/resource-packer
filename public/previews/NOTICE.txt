@@ -1,0 +1,30 @@
+Minecraft texture previews © Mojang AB / Microsoft. All rights reserved.
+
+These selected vanilla images are displayed as informational references in the
+Resource Packer community editor. They are not original project artwork or
+covered by the application's source-code license. No permissive asset license
+is claimed. They must not be included in generated packs or project backups.
+
+Java: Minecraft 26.3 official client, SHA-1
+e877b6a07acd633fb3bb475002175cec036e7b87
+https://piston-data.mojang.com/v1/objects/e877b6a07acd633fb3bb475002175cec036e7b87/client.jar
+
+Bedrock: Mojang/bedrock-samples 1.26.50.4, revision
+46ba6ea985fb5a92d79a9419198f10dda14c199d
+https://github.com/Mojang/bedrock-samples/tree/46ba6ea985fb5a92d79a9419198f10dda14c199d/resource_pack
+https://github.com/Mojang/bedrock-samples/blob/46ba6ea985fb5a92d79a9419198f10dda14c199d/LICENSE.md
+
+Usage guidelines: https://www.minecraft.net/en-us/usage-guidelines
+EULA: https://www.minecraft.net/en-us/eula
+Reviewed for this Minecraft-related reference interface on 2026-10-21.
+The supplied sample license reserves all rights and refers users to the EULA;
+public availability is not a permissive redistribution license. The intended
+use is limited display in a Minecraft community reference/editor interface,
+under the domain names/websites guidance, with clear non-affiliation wording.
+
+See src/catalog-previews.ts for per-image source paths and SHA-256 hashes.
+Bedrock grass/leaves use official carried/opaque PNG display variants; the
+replaceable base textures use TGA. These are flat texture references, not
+in-game renders. Tint, transparency, models, and lighting can change appearance.
+
+NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.

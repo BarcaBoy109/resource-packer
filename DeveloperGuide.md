@@ -199,7 +199,7 @@ Use original test assets and generic catalog icons initially. Do not redistribut
 ### Current implementation
 
 - Enabled profiles: Java 26.3 (official Resource Pack format 97.1) and Bedrock 26.50 (Mojang sample 1.26.50.4, commit `46ba6ea`). These are separate display-version and metadata values. Bedrock 26.52 is excluded because a matching Mojang sample revision was not established.
-- Catalog counts: 20 block IDs per edition, with oak and birch log top slots (22 texture slots total), and 12 sound IDs per edition across block interaction, entity, and ambient groups.
+- Catalog counts after the 2026-10-21 catalog expansion: Java has 35 unique block IDs (41 editable texture slots, including multi-face blocks) and 36 sound events; Bedrock has 20 block IDs (22 texture slots) and 12 legacy sound IDs hidden from editing. Java additions include all 19 block texture files and 23 sound events listed in the Java 26.3 release notes.
 - Editor features: search, tabs, category and changed-only filters; PNG and Ogg/Vorbis upload validation; previews and playback; pack name/description/icon; replacement removal; Java ZIP, Bedrock MCPACK and ZIP exports; IndexedDB drafts; project backup/import; saved draft restoration; safe cross-edition cloning with unresolved edits; installation guidance.
 - Java output uses `pack.mcmeta` format 97 with `min_format` and `max_format` `[97, 1]`, and Java event overrides. Bedrock output has root `manifest.json`, distinct UUIDs, and a resources module. Bedrock sound export is blocked until exact event references are confirmed.
 - Limits are 16 MiB per replacement and 100 MiB total project asset data. Import preflights ZIP entry count and central-directory sizes before extraction.
@@ -228,3 +228,15 @@ See `docs/compatibility.md` for source references and `docs/manual-testing.md` f
 ## Villager idle sound (2026-10-21)
 
 Java now offers “Villager idle noises” separately from “Villager agrees,” bringing the Java sound catalog to 13 events. Its `entity.villager.ambient` event was verified against the pinned Mojang 26.3 asset index and sounds definition recorded in `docs/compatibility.md`. Existing agreement edits retain their original behavior. Bedrock sound editing stays hidden. The user confirmed agreement replacement works in Java 26.3; idle in-game testing remains pending.
+
+## Texture references and sound artwork (2026-10-21)
+
+- Actual vanilla references replace the catalog's generic block marks and appear enlarged in the empty replacement editor. 40 Java and 22 Bedrock texture slots have bundled references; the newly added yellow poplar leaves entry is source-verified but its preview is pending because the local asset refresh could not reach Mojang.
+- Sources are the SHA-1-verified official Java 26.3 client and pinned Mojang Bedrock sample `46ba6ea985fb5a92d79a9419198f10dda14c199d`. Per-file paths, sizes, and SHA-256 hashes are recorded in `src/catalog-previews.ts`; see `docs/texture-previews.md` for display variants and attribution. Mojang assets retain their copyright; no permissive asset license is claimed.
+- Preview files are local static UI assets, independent of export/backup data. Original raw texture colors, including grayscale tint masks, are retained. Previews do not reproduce in-game tint, lighting, or models. Missing images have an explicit fallback and leave replacement controls usable.
+- A shared outlined SVG speaker replaces the CSS/typographic speaker placeholders across the sound tab, catalog, upload editor, and uploaded-sound preview. Catalog thumbnails and row spacing are larger for scanning; focus and narrow layouts are retained.
+- The source refresh also caught and corrected a duplicate `.png` suffix introduced concurrently on log-top catalog paths. The separate catalog expansion was otherwise preserved.
+- Run the app with `npm run dev`; rebuild with `npm run build`. Refresh pinned preview files manually with `node --experimental-strip-types scripts/sync-previews.mjs` (Node 22+, network access). Preview files are never fetched at build or export time. Game compatibility remains subject to the existing pending in-game checks.
+- Verification for this UI pass: `npm run typecheck`, `npm run lint`, `npm run test` (17 tests) and `npm run build` passed; `npm run test:e2e` reported all 15 cases passing, but the runner did not exit cleanly after its final case and was stopped. Desktop block-reference and mobile sound-catalog layouts were visually inspected. No Minecraft game test was run.
+
+

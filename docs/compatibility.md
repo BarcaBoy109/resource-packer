@@ -11,7 +11,7 @@ Baseline reviewed 2026-10-13. “Source-backed version metadata” means the rel
 
 Bedrock 26.52 is not offered: its release is confirmed by the [official 26.52 hotfix notes](https://feedback.minecraft.net/hc/en-us/articles/49175370527501-Minecraft-Bedrock-Edition-26-52-Hotfix-Changelog), but a matching 26.52 Mojang sample revision was not available in this review. Java 26.2 and 1.21.11 are not offered as separate profiles in this first build.
 
-The current app catalog contains 20 block IDs (Oak log and Birch log each have a separately editable top slot), 13 Java sound IDs, and 12 legacy Bedrock sound IDs hidden from editing. It includes block interaction, entity, and ambient sound categories. These mappings have not all been exhaustively verified against release assets.
+The current app catalog contains 35 Java block IDs (41 editable texture slots, including Oak, Birch, Poplar, and Stripped Poplar log tops/sides), 36 Java sound events, 20 Bedrock block IDs (22 editable texture slots), and 12 legacy Bedrock sound IDs hidden from editing. The Java-only texture additions in the 2026-10-21 expansion are enumerated by Mojang in the [26.3 release notes](https://feedback.minecraft.net/hc/en-us/articles/48913133328013-Minecraft-Java-Edition-26-3); their filenames and event identifiers are recorded with that source in `src/domain.ts`. Sound uploads replace the selected event with one custom clip; the custom archive path is derived from the event identifier and is not a claim about the vanilla clip filename. Bedrock has not been expanded because its source texture registry alone does not verify every block-to-slot relationship, and its sound exporter is still blocked. The earlier hand-curated mappings are not exhaustively verified.
 
 ## Java villager event verification (2026-10-21)
 
@@ -23,12 +23,18 @@ The user reports agreement replacement works in Java 26.3. Idle replacement stil
 
 ## Mapping and behavior gaps
 
-- Java paths are a manually curated mapping in `src/domain.ts`; a complete pinned Java client asset-index audit for every path is pending. Java sound events are assembled into an overriding `sounds.json`, but replacement completeness and sound-pool behavior have not been checked against the exact 26.3 client.
+- Java paths are a manually curated mapping in `src/domain.ts`. The new Java 26.3 texture filenames and event identifiers are source-checked against Mojang release notes; legacy mappings still need a complete client asset-index audit. Java sound events are assembled into an overriding `sounds.json`, but replacement completeness and sound-pool behavior have not been checked against the exact 26.3 client.
 - Bedrock texture paths are hand-curated and have not yet been compared entry-by-entry with `blocks.json` and `terrain_texture.json` at commit `46ba6ea`. Bedrock sound editing is hidden and sound export is blocked until exact release events and replacement paths are cataloged. Legacy sound edits are retained for explicit removal.
 - Shared texture/sound reverse references are not exhaustive. Affected consumers are not currently shown, and a shared asset may affect more selections than the UI lists.
 - Catalog items include cube faces and simple texture slots only. Models, animated textures, special renderers, and non-cube slot sets are excluded.
 - A Bedrock manifest uses distinct project UUIDs, resources module type, and a conservative minimum engine version `[1, 20, 0]`. The game display version and engine version remain separate values.
 - These are archive-structure checks, not game compatibility claims. No in-game smoke test was run for either target.
+
+## Comparison against user-provided lists (2026-10-21)
+
+- The [block-by-version list](https://minecraft.wiki/w/List_of_blocks_by_version) shows 90 Java block IDs introduced in 26.3 snapshots. The catalog now uses canonical IDs for 15 texture-backed Poplar, Shelf Mushroom, Red Shrub, and Straw Bed blocks and exposes 19 Mojang-listed texture slots for them. The remaining 75 IDs include wool/concrete stairs and slabs plus Poplar-derived block variants. These share texture references or need block-model checks, so they are not represented as independent replacement targets yet.
+- [Crafty’s sound browser](https://crafty.gg/tools/sounds) labels its 1,838-event list as Minecraft 1.21.11, while this app targets 26.3. The catalog has 23 additional event IDs explicitly listed in Mojang’s 26.3 release notes. Remaining events need a comparison against the pinned 26.3 `sounds.json` before they can be enabled.
+- The two lists help identify candidates, but neither establishes current 26.3 texture paths or sound definitions. No 26.3 compatibility is inferred from the 1.21.11 sound list.
 
 ## Primary reference material
 
@@ -37,3 +43,5 @@ The user reports agreement replacement works in Java 26.3. Idle replacement stil
 - [Bedrock resource pack manifest](https://learn.microsoft.com/en-us/minecraft/creator/reference/content/addonsreference/packmanifest?view=minecraft-bedrock-stable).
 - [Bedrock sounds and path overrides](https://learn.microsoft.com/en-us/minecraft/creator/documents/addcustomsounds?view=minecraft-bedrock-stable), [overwriting vanilla assets](https://learn.microsoft.com/en-us/minecraft/creator/documents/overwritingassets?view=minecraft-bedrock-stable).
 - [Java usage guidelines](https://www.minecraft.net/en-us/usage-guidelines).
+
+
