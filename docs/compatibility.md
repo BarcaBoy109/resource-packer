@@ -11,7 +11,15 @@ Baseline reviewed 2026-10-13. “Source-backed version metadata” means the rel
 
 Bedrock 26.52 is not offered: its release is confirmed by the [official 26.52 hotfix notes](https://feedback.minecraft.net/hc/en-us/articles/49175370527501-Minecraft-Bedrock-Edition-26-52-Hotfix-Changelog), but a matching 26.52 Mojang sample revision was not available in this review. Java 26.2 and 1.21.11 are not offered as separate profiles in this first build.
 
-The current app catalog contains 20 block IDs (Oak log and Birch log each have a separately editable top slot) and 12 sound IDs for both editions. It includes block interaction, entity, and ambient sound categories. The table below describes what is implemented; it is **not** a claim that these 64 profile-specific mappings were exhaustively verified against release assets.
+The current app catalog contains 20 block IDs (Oak log and Birch log each have a separately editable top slot), 13 Java sound IDs, and 12 legacy Bedrock sound IDs hidden from editing. It includes block interaction, entity, and ambient sound categories. These mappings have not all been exhaustively verified against release assets.
+
+## Java villager event verification (2026-10-21)
+
+“Villager idle noises” overrides `entity.villager.ambient`, replacing its full three-clip idle pool. “Villager agrees” independently overrides `entity.villager.yes`. The archive uses its own clip paths referenced by `sounds.json`; those paths do not need to match vanilla clip filenames.
+
+Verified against Mojang's [26.3 version metadata](https://piston-meta.mojang.com/v1/packages/61fff1316bd50312624a858bbb5eb18fa45208ed/26.3.json), [asset index 34](https://piston-meta.mojang.com/v1/packages/0c8f43b28f837869c1e54a6aeb22c396a1548946/34.json), and [sounds.json](https://resources.download.minecraft.net/79/7975165ad4a3c0cb3c05078b914eac0f2c3b5f5f). Their pinned SHA-1 hashes are encoded in these URLs. Vanilla ambient references are `mob/villager/idle1`, `idle2`, and `idle3`; agreement references are `mob/villager/yes1`, `yes2`, and `yes3`.
+
+The user reports agreement replacement works in Java 26.3. Idle replacement still needs an in-game smoke test: enable the exported ZIP, reload resources, and run `/playsound minecraft:entity.villager.ambient master @s ~ ~ ~ 1 1`, then listen near villagers. Test agreement separately to confirm it remains unchanged unless explicitly replaced.
 
 ## Mapping and behavior gaps
 
