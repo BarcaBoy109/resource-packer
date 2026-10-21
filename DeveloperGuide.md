@@ -199,7 +199,7 @@ Use original test assets and generic catalog icons initially. Do not redistribut
 ### Current implementation
 
 - Enabled profiles: Java 26.3 (official Resource Pack format 97.1) and Bedrock 26.50 (Mojang sample 1.26.50.4, commit `46ba6ea`). These are separate display-version and metadata values. Bedrock 26.52 is excluded because a matching Mojang sample revision was not established.
-- Catalog counts after the 2026-10-21 catalog expansion: Java has 35 unique block IDs (41 editable texture slots, including multi-face blocks) and 36 sound events; Bedrock has 20 block IDs (22 texture slots) and 12 legacy sound IDs hidden from editing. Java additions include all 19 block texture files and 23 sound events listed in the Java 26.3 release notes.
+- Catalog counts after the 2026-10-21 catalog expansion: Java has 35 unique block IDs (41 editable texture slots, including multi-face blocks) and 42 sound events; Bedrock has 20 block IDs (22 texture slots) and 12 legacy sound IDs hidden from editing. Java additions include all 19 block texture files and 23 sound events listed in the Java 26.3 release notes, plus six player damage/death events checked against the version-pinned sound definitions. Direct final-release sound payload comparison remains pending.
 - Editor features: search, tabs, category and changed-only filters; PNG and Ogg/Vorbis upload validation; previews and playback; pack name/description/icon; replacement removal; Java ZIP, Bedrock MCPACK and ZIP exports; IndexedDB drafts; project backup/import; saved draft restoration; safe cross-edition cloning with unresolved edits; installation guidance.
 - Java output uses `pack.mcmeta` format 97 with `min_format` and `max_format` `[97, 1]`, and Java event overrides. Bedrock output has root `manifest.json`, distinct UUIDs, and a resources module. Bedrock sound export is blocked until exact event references are confirmed.
 - Limits are 16 MiB per replacement and 100 MiB total project asset data. Import preflights ZIP entry count and central-directory sizes before extraction.
@@ -244,3 +244,8 @@ Java now offers “Villager idle noises” separately from “Villager agrees,�
 ## Square texture crop and export sizing (2026-10-21)
 
 Texture replacement accepts PNG, JPEG, and WebP images up to 16 MiB. The user positions a square crop using the full shorter image edge; the cropped square is retained in its original resolution (16–4096 px) in the local project. On archive creation, square textures are downsized with smoothing to the largest supported edge among 64, 32, and 16 pixels that does not exceed the crop. Smaller square assets and older non-square draft textures are left at their existing size. The exported archive is independently checked in browser tests; in-game appearance remains pending.
+
+## Header cleanup (2026-10-21)
+
+Removed the saved-on-device badge and mapping-status text from the editor. The header now uses the same public/favicon.svg artwork as the browser favicon. Unused badge styles were removed. Production build and lint passed; the header and target controls were visually checked at desktop and 390px widths.
+

@@ -29,16 +29,13 @@ main { max-width: 1480px; margin: 0 auto; padding: 0 40px; }
 .top { height: 64px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line-soft); }
 .brand { display: flex; align-items: center; gap: 11px; font-size: 12px; letter-spacing: .1em; }
 .brand b { font-weight: 700; }
-.mark { width: 30px; height: 30px; display: grid; place-items: center; color: var(--accent-ink); background: var(--accent); border-radius: 5px; font-weight: 800; font-size: 10px; letter-spacing: -.04em; }
-.save-state { color: var(--muted); font-size: 12px; }
-.save-state::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 8px 1px 0; border-radius: 50%; background: #87c987; }
+.brand-icon { display: block; width: 32px; height: 32px; flex: none; object-fit: contain; }
 .hero { padding: 34px 0 28px; }
 .hero h1 { margin: 0 0 7px; font-size: clamp(24px, 2.4vw, 31px); line-height: 1.2; font-weight: 650; letter-spacing: -.025em; }
 .intro { margin: 0; max-width: 62ch; color: var(--muted); font-size: 14px; line-height: 1.55; }
 .bar { display: flex; align-items: end; gap: 12px; padding: 13px 15px; margin-bottom: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; }
 .bar label { width: min(195px, 22%); color: var(--muted); font-size: 11px; }
 .bar select { margin-top: 6px; }
-.status-pill { margin-left: auto; padding-bottom: 9px; color: var(--muted); font-size: 11px; }
 .workspace { display: grid; grid-template-columns: minmax(235px, .92fr) minmax(330px, 1.38fr) minmax(270px, .98fr); gap: 12px; align-items: stretch; }
 .panel { min-width: 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; }
 .catalog, .editor, .summary { min-height: 540px; }
@@ -159,7 +156,6 @@ footer a:hover { color: var(--ink); }
   .intro { font-size: 12px; }
   .bar { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 11px; }
   .bar label { width: auto; }
-  .status-pill { grid-column: 1 / -1; margin: 0; padding: 3px 0 0; }
   .workspace { display: flex; flex-direction: column; }
   .catalog, .editor { min-height: unset; }
   .asset-list { max-height: 260px; }
