@@ -4,3 +4,5 @@ test-results/
 playwright-report/
 coverage/
 *.tsbuildinfo
+# Downloaded Mojang source files used only by scripts/build-catalog.mjs
+.cache/

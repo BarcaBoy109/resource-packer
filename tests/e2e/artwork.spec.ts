@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
 
 for (const edition of ['java', 'bedrock'] as const) {
-  test(`${edition} displays all vanilla thumbnails and distinct log faces`, async ({ page }) => {
+  test(`${edition} displays available vanilla thumbnails, unavailable-preview fallbacks, and distinct log faces`, async ({ page }) => {
     await page.goto('/');
     if (edition === 'bedrock') await page.getByLabel('Edition').selectOption('bedrock');
     const images = page.locator('.catalog-artwork img');
     await expect.poll(() => images.evaluateAll(nodes => nodes.length > 0 && nodes.every(node => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0))).toBe(true);
-    await expect(page.locator('.catalog .missing-texture-icon')).toHaveCount(edition === 'java' ? 1 : 0);
+    await expect(page.locator('.catalog .missing-texture-icon')).toHaveCount(edition === 'java' ? 13 : 12);
     if (edition === 'java') {
       await page.getByLabel('Search catalog').fill('yellow_poplar_leaves');
       await page.locator('.asset').click();

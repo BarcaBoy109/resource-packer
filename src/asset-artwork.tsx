@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { previewCatalog } from './catalog-previews';
-import type { Asset, Edition } from './domain';
+import type { Asset } from './domain';
 
 export function SpeakerIcon({ className = '' }: { className?: string }) {
   return <svg className={`speaker-icon ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -16,17 +15,17 @@ function MissingTextureIcon() {
   </svg>;
 }
 
-/** Preview metadata is independent of the project and the archive's export paths. */
-export function AssetArtwork({ asset, edition, gameVersion, className = '' }: {
-  asset: Asset; edition: Edition; gameVersion: string; className?: string;
-}) {
+export const previewSrc = (id: string) => `/previews/sha/${id}.png`;
+
+/** Preview images are content-addressed UI references, independent of export paths. */
+export function AssetArtwork({ asset, className = '' }: { asset: Asset; className?: string }) {
   const [failedSource, setFailedSource] = useState('');
   if (asset.kind === 'sound') {
     return <span className={`asset-artwork sound-artwork ${className}`} aria-hidden="true"><SpeakerIcon /></span>;
   }
-  const preview = previewCatalog.textures.find(p => p.edition === edition && p.gameVersion === gameVersion && p.path === asset.path);
-  const available = preview && failedSource !== preview.src;
+  const src = asset.preview ? previewSrc(asset.preview) : '';
+  const available = src && failedSource !== src;
   return <span className={`asset-artwork texture-artwork ${className}`} role={available ? undefined : 'img'} aria-label={available ? undefined : 'Texture preview unavailable'} title={available ? 'Vanilla texture reference. In-game tint and lighting vary.' : 'Texture preview unavailable'}>
-    {available ? <img src={preview.src} width={preview.width} height={preview.height} alt={`${asset.name} vanilla texture`} decoding="async" onError={() => setFailedSource(preview.src)} /> : <MissingTextureIcon />}
+    {available ? <img src={src} alt={`${asset.name} vanilla texture`} decoding="async" loading="lazy" onError={() => setFailedSource(src)} /> : <MissingTextureIcon />}
   </span>;
 }

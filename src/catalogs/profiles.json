@@ -1,0 +1,90 @@
+[
+  {
+    "edition": "bedrock",
+    "version": "26.60",
+    "label": "Bedrock 26.60",
+    "order": "0001.0026.0060.0005",
+    "catalog": "bedrock/5bca2815487919e7",
+    "bedrock": {
+      "sampleVersion": "1.26.60.5",
+      "engineVersion": [
+        1,
+        26,
+        60
+      ]
+    },
+    "sources": {
+      "repositoryUrl": "https://github.com/Mojang/bedrock-samples/tree/15701fa9c13923f12662984c32c124327e40e3d3",
+      "tag": "v1.26.60.5",
+      "commit": "15701fa9c13923f12662984c32c124327e40e3d3",
+      "blocksSource": "metadata/vanilladata_modules/mojang-blocks.json + resource_pack/blocks.json"
+    },
+    "counts": {
+      "blocks": 1466,
+      "slots": 1933,
+      "editableSlots": 1779,
+      "sounds": 1851
+    },
+    "verification": "source-generated"
+  },
+  {
+    "edition": "bedrock",
+    "version": "26.50",
+    "label": "Bedrock 26.50",
+    "order": "0001.0026.0050.0004",
+    "catalog": "bedrock/56536f2b72cf46a4",
+    "bedrock": {
+      "sampleVersion": "1.26.50.4",
+      "engineVersion": [
+        1,
+        26,
+        50
+      ]
+    },
+    "sources": {
+      "repositoryUrl": "https://github.com/Mojang/bedrock-samples/tree/46ba6ea985fb5a92d79a9419198f10dda14c199d",
+      "tag": "v1.26.50.4",
+      "commit": "46ba6ea985fb5a92d79a9419198f10dda14c199d",
+      "blocksSource": "metadata/vanilladata_modules/mojang-blocks.json + resource_pack/blocks.json"
+    },
+    "counts": {
+      "blocks": 1463,
+      "slots": 1933,
+      "editableSlots": 1779,
+      "sounds": 1851
+    },
+    "verification": "source-generated"
+  },
+  {
+    "edition": "java",
+    "version": "26.3",
+    "label": "Java 26.3",
+    "order": "2026-09-15T11:23:02+00:00",
+    "releaseTime": "2026-09-15T11:23:02+00:00",
+    "catalog": "java/8ed381d5dfb76185",
+    "java": {
+      "resourceFormat": [
+        97,
+        1
+      ]
+    },
+    "sources": {
+      "manifestUrl": "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+      "metadataUrl": "https://piston-meta.mojang.com/v1/packages/5df1795e16eea19d75b923d66ecca9ce183353c5/26.3.json",
+      "metadataSha1": "5df1795e16eea19d75b923d66ecca9ce183353c5",
+      "clientUrl": "https://piston-data.mojang.com/v1/objects/e877b6a07acd633fb3bb475002175cec036e7b87/client.jar",
+      "clientSha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "assetIndexUrl": "https://piston-meta.mojang.com/v1/packages/917ff6d74b9f635c46bac0d28857206bbcc1ffe4/34.json",
+      "assetIndexSha1": "917ff6d74b9f635c46bac0d28857206bbcc1ffe4",
+      "soundsUrl": "https://resources.download.minecraft.net/79/7975165ad4a3c0cb3c05078b914eac0f2c3b5f5f",
+      "soundsSha1": "7975165ad4a3c0cb3c05078b914eac0f2c3b5f5f"
+    },
+    "counts": {
+      "blocks": 1288,
+      "slots": 2037,
+      "editableSlots": 1974,
+      "sounds": 1991
+    },
+    "verification": "source-generated"
+  }
+]
