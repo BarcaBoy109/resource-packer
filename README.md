@@ -2,6 +2,10 @@
 
 A local browser app for assembling Minecraft resource packs. Drafts and uploaded files stay in browser IndexedDB; no backend is used.
 
+## Support the project
+
+If Resource Packer is useful to you, you can [sponsor BarcaBoy109 on GitHub](https://github.com/sponsors/BarcaBoy109).
+
 ## Run locally
 
 Requires Node.js 22.15+ and npm.
